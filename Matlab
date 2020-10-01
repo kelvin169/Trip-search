@@ -1,0 +1,68 @@
+int value;
+
+void setup()
+{
+Serial.begin(9600);
+pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  if(Serial.available()>0)
+  {
+    value=Serial.read();
+
+    if  (value == 1)           
+    { 
+    digitalWrite(13, HIGH);
+    }
+    if(value == 0)         
+    { 
+    digitalWrite(13, LOW);
+    }
+  }
+}
+
+MATLAB Code for Serial Communication using MATLAB GUI
+
+function varargout = final(varargin)
+
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @final_OpeningFcn, ...
+                   'gui_OutputFcn',  @final_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+
+handles.output = hObject;
+
+guidata(hObject, handles);
+
+function varargout = final_OutputFcn(hObject, eventdata, handles) 
+
+varargout{1} = handles.output;
+clear all;
+global x;
+x=serial('COM18','BAUD', 9600); % Make sure the baud rate and COM port is 
+                              % same as in Arduino IDE
+fopen(x);
+
+function turnonled_Callback(hObject, eventdata, handles)
+
+global x;
+fprintf(x,1);
+
+function turnoffled_Callback(hObject, eventdata, handles)
+
+global x;
+fprintf(x,0);
